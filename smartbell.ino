@@ -1,6 +1,7 @@
-#define BLYNK_TEMPLATE_ID "TMPL2dI_gKiww"
-#define BLYNK_TEMPLATE_NAME "Smart School Bell"
-#define BLYNK_AUTH_TOKEN "vAiv6tycSsm_31ptdWAvuVbJ3rL2QgHq"
+
+#define BLYNK_TEMPLATE_ID "TMPL2U6mvO8JT"
+#define BLYNK_TEMPLATE_NAME "iot based smart school bell"
+#define BLYNK_AUTH_TOKEN "pjNDyHQCIGYluwX5MqeyTVFtD6XEv4g_"
 
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -9,8 +10,8 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-char ssid[] = "EdNet";
-char pass[] = "Huawei@123";
+char ssid[] = "Theo";
+char pass[] = "";
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -85,10 +86,12 @@ void stopbell() {
 void checkButton() {
   if (digitalRead(BUTTON_PIN) == HIGH) {
     showLCD("BUTTON PRESSED", "Manual Bell");
-    ringBell();
-    delay(1000);
+    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(BUZZER_PIN, HIGH);
+    
   } else {
-    stopbell();
+    digitalWrite(RELAY_PIN, HIGH);
+    digitalWrite(BUZZER_PIN, LOW);
   }
 }
 
@@ -155,7 +158,7 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(RELAY_PIN, OUTPUT);
-  pinMode(BUTTON_PIN, INPUT);
+  pinMode(BUTTON_PIN,INPUT);
   pinMode(BUZZER_PIN, OUTPUT);
   digitalWrite(RELAY_PIN, HIGH);
   digitalWrite(BUZZER_PIN, LOW);
@@ -192,7 +195,7 @@ void setup() {
   delay(2000);
 
   timer.setInterval(1000L, displayTime);
-  timer.setInterval(200L, checkButton);
+  timer.setInterval(300L, checkButton);
   timer.setInterval(5000L, checkSchedule);
 }
 
